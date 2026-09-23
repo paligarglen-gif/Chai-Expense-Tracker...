@@ -1,4 +1,3 @@
-import json
 import gspread
 import pandas as pd
 import streamlit as st
@@ -12,11 +11,7 @@ def init_connection():
       "https://www.googleapis.com/auth/drive",
   ]
 
-  # Direktang basahin mula sa Streamlit Secrets
-  creds_dict = json.loads(st.secrets["gcp_json"])
-  if "private_key" in creds_dict:
-    creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
-
+  creds_dict = dict(st.secrets["gcp_service_account_json"])
   creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
   client = gspread.authorize(creds)
   return client
